@@ -15,9 +15,13 @@
   "author": "Derrick Persson (https://github.com/derrickpersson)",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-healthcheck": "^0.1.0",
+    "lodash.merge": "^4.6.2"
   },
   "devDependencies": {
-    "@types/express": "^4.17.3"
+    "@types/express": "^4.17.3",
+    "@types/lodash.merge": "^4.6.6"
   }
 }
