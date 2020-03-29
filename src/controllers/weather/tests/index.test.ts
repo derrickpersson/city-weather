@@ -26,6 +26,12 @@ const mockWeatherProvider: IWeatherProvider = {
     }))
 }
 
+const mockWeatherProviderError: IWeatherProvider = {
+    getLocationWeather: jest.fn(() => new Promise((resolve, reject) => {
+        reject(new Error());
+    })),
+}
+
 describe("weatherController", () => {
     const weatherController = new WeatherController(mockWeatherProvider);
 
@@ -47,5 +53,26 @@ describe("weatherController", () => {
             location: "test",
             ...mockProviderResponse,
         });
+    });
+
+    it("index route should return an error when not given valid query parameters", async () => {
+        const mockRequest = {
+            query: {
+                location: undefined,
+                type: "current",
+            }
+        } as Request;
+
+        const mockResponse = {
+            status: jest.fn(() => mockResponse),
+            send: jest.fn(),
+        } as any;
+
+        const weatherController = new WeatherController(mockWeatherProviderError);
+
+        await weatherController.index(mockRequest, mockResponse);
+
+        expect(mockResponse.status).toBeCalledWith(400);
+        expect(mockResponse.send).toBeCalled();
     });
 })
