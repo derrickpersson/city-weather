@@ -9,6 +9,10 @@ const weatherController = new WeatherController(randomWeatherProvider);
 
 const app = express();
 
+const router = express.Router();
+
+app.use('/api/v1/', router);
+
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -26,6 +30,6 @@ app.get('/info', async function (req, res) {
     });
 });
 
-app.get('/weather', weatherController.index);
+router.get('/weather', weatherController.index);
 
 export default app;

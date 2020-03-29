@@ -17,7 +17,7 @@ const baseConfig: BaseConfig = {
     env,
     isDev: env === "development",
     isProd: env === "production",
-    port: 9090,
+    port: parseInt(process.env.PORT) || 9090,
 }
 
 let envConfig = {};
