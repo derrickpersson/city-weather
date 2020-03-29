@@ -5,6 +5,10 @@ export class RandomWeatherProvider implements IWeatherProvider {
     public getLocationWeather: (location: string, options?: WeatherOptions) => Promise<WeatherDataProviderResponse>
         = (location: string, options?: WeatherOptions) => {
         return new Promise((resolve, reject) => {
+            if(!location){
+                reject(new Error("Location not provided"));
+            }
+
             let current;
             if(options.type === "current" || !options.type){
                 current = this.getRandomWeatherData(0);

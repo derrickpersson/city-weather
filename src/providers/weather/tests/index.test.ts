@@ -59,4 +59,13 @@ describe("RandomWeatherProvider", () => {
 
         expect(await randomWeatherProvider.getLocationWeather("test", { type: "forecast" })).toEqual(expectedOutput);
     });
+
+    it("should get throw an error when location is not provided", async () => {
+
+        try {
+            await randomWeatherProvider.getLocationWeather(undefined, undefined)
+        } catch (error) {
+            expect(error).toBeInstanceOf(Error);
+        }
+    });
 })

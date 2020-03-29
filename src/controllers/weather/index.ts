@@ -11,14 +11,25 @@ export class WeatherController {
     public index = async (request: Request, response: Response) => {
         const { location, type } = request.query;
 
-        const weatherData = await this.weatherProvider.getLocationWeather(location, { type });
+        try {
 
-        const weatherDataResponse = {
-            location,
-            ...weatherData,
+            const weatherData = await this.weatherProvider.getLocationWeather(location, { type });
+
+            const weatherDataResponse = {
+                location,
+                ...weatherData,
+            }
+    
+            response.send(weatherDataResponse);
+
+        } catch (error) {
+
+            response.status(400).send({
+                error: error.message,
+            });
+
         }
 
-        response.send(weatherDataResponse);
     }
 }
 
