@@ -17,7 +17,7 @@ const baseConfig: BaseConfig = {
     env,
     isDev: env === "development",
     isProd: env === "production",
-    port: 8080,
+    port: 9090,
 }
 
 let envConfig = {};
