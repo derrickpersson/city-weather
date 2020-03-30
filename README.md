@@ -8,12 +8,15 @@ As a developer, I need a way to get the weather for a specific city via an API.
 
 Additional Assumptions / User Stories:
 
-As a developer, I need a way to get the current weather for a specific city via an API.
+As a developer, I need a way to get the current weather for a specific city via an API. 
+
 As a developer, I need a way to get the 7 day forecast of weather for a specific city via an API.
 
 Stretch (not implemented):
 As a user, I need a user account to save personalized information about the weather.
+
 As an authenticated user, I need to save cities to my favourites.
+
 As an authenticated user, I need a way to retrieve cities on my favourite list.
 
 ### Tech Stack Decision
@@ -26,6 +29,8 @@ I chose Typescript over Javascript because of type checking, which I feel is an 
 
 I chose Express because it is a fast and minimal web server framework for Node.js.
 
+For the deployment environment I chose to run it in a containerized environment - Docker. Docker provides utilities like automatically restarting services when they go down, as well as recording the console errors into a log. Additionally, it makes the set up of the app incredibly easy if it needs to be set up on a different physical device, which as the service is scaled is an inevitability.
+
 ### API Design
 
 base path = /v1/
@@ -34,9 +39,9 @@ weather => GET /weather
 
 Acceptable query parameters:
 
-location="city" => If location is not provided returns an error. Else, will return weather data for that city.
+location=city => If location is not provided returns an error. Else, will return weather data for that city.
 
-type="current"|"forecast" => if not provided both types of information will be returned
+type=current|forecast => if not provided both types of information will be returned
 
 ```typescript
 interface WeatherResponse {
@@ -87,7 +92,9 @@ Monday, March 30th, 2020
 
 ### Time spent
 Design & basic app set up - 2 hours
+
 Implementation - 2.5 hours
+
 Deployment - 0.5 hour
 
 Total - 5 hours
@@ -97,10 +104,7 @@ I wrote additional user stories (listed above) that outline some of the assumpti
 
 
 ### Shortcuts/Compromises made
-Handled the location parameter. Currently is ignored completely because the data that is generated is random, so location didn't matter. In a real application the location would be used to find the cities weather.
-
-I originally planned on having a list of 'valid cities' that the API would support - with the intent to have a list of all major valid cities in North America. Unfortunately, I wasn't able to procure such a list and therefore I felt it better to just leave the location parameter unhandled and return the fake data that would be generated.
-
+I originally planned on having a list of 'valid cities' that the API would support - with the intent to have a list of all major valid cities in North America. Unfortunately, I wasn't able to procure such a list and therefore I felt it better to just leave the location parameter unhandled and return the fake data that would be generated. It does however throw an error if no location is provided.
 
 ### Stretch goals attempted
 I had originally planned to tackle the authentication stretch goal, unfortunately I ran out of time to complete this. Instead I decided to tackle the deployment stretch goal.
@@ -109,14 +113,16 @@ I had originally planned to tackle the authentication stretch goal, unfortunatel
 ### Instructions to run assignment locally
 
 ```bash
+git clone git@github.com:derrickpersson/city-weather.git
+cd city-weather
 npm i
 npm run build
 npm run start
 ```
 
 ### What did you not include in your solution that you want us to know about?
-Were you short on time and not able to include something that you want us to know
-about? Please list it here so that we know that you considered it.
+
+With more time, I would have enhanced the basic infrastructure of the application, adding in features like - consistent logging (with Winston) and a 'catch all' error handler for Express. 
 
 
 ### Other information about your submission that you feel it's important that we know if applicable.
