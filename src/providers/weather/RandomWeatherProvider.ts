@@ -1,7 +1,19 @@
 import { IWeatherProvider, WeatherOptions, WeatherDataProviderResponse } from "../weather";
 import { WeatherData, WeatherState } from "../../models/weather";
 
+interface WeatherCacheData extends WeatherDataProviderResponse {
+    expire: number;
+}
+
+interface WeatherCache {
+    [key: string]: WeatherCacheData;
+}
+
+const TWELVE_HOURS = 43200000;
+
 export class RandomWeatherProvider implements IWeatherProvider {
+    private weatherCache: WeatherCache = {};
+
     public getLocationWeather: (location: string, options?: WeatherOptions) => Promise<WeatherDataProviderResponse>
         = (location: string, options?: WeatherOptions) => {
         return new Promise((resolve, reject) => {
@@ -19,11 +31,18 @@ export class RandomWeatherProvider implements IWeatherProvider {
                 forecast = ([...Array(7)]).map((element, index) => this.getRandomWeatherData(index));
             }
 
-            resolve({
+            const cachedWeather = this.weatherCache[location]?.weather;
+            const expiryDate = Date.now() + TWELVE_HOURS;
+            this.weatherCache[location] = {
                 weather: {
-                    current,
-                    forecast,
-                }
+                    current: this.isValidCachedData(location) ? cachedWeather?.current : current,
+                    forecast: this.isValidCachedData(location) ? cachedWeather?.forecast : forecast,
+                },
+                expire: expiryDate,
+            }
+
+            resolve({
+                weather: this.weatherCache[location].weather,
             })
         });
     }
@@ -42,6 +61,12 @@ export class RandomWeatherProvider implements IWeatherProvider {
             },
             probabilityOfPrecipitation: this.getRandomNumberBetween(0, 100),
         }
+    }
+
+    private isValidCachedData = (location: string) => {
+        const NOW = Date.now();
+        const cachedLocation = this.weatherCache[location];
+        return !!cachedLocation && NOW <= cachedLocation.expire
     }
 
     private getRandomWeatherState: () => WeatherState = () => {
