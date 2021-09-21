@@ -38,7 +38,7 @@ export class RandomWeatherProvider implements IWeatherProvider {
                     current: this.isValidCachedData(location) ? cachedWeather?.current : current,
                     forecast: this.isValidCachedData(location) ? cachedWeather?.forecast : forecast,
                 },
-                expire: expiryDate,
+                expire: this.isValidCachedData(location) ? this.weatherCache[location]?.expire : expiryDate,
             }
 
             resolve({
