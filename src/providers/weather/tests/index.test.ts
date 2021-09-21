@@ -94,9 +94,9 @@ describe("RandomWeatherProvider", () => {
         expect(await randomWeatherProvider.getLocationWeather("test", { type: "current" })).toEqual(expectedOutput);
 
         const LESS_THAN_TWELVE_HOURS = 43100000
-        global.Date.now = jest.fn(() => 1585440589478 + 43100000) as any;
+        global.Date.now = jest.fn(() => 1585440589478 + LESS_THAN_TWELVE_HOURS) as any;
         expect(await randomWeatherProvider.getLocationWeather("test", { type: "current" })).toEqual(expectedOutput);
-
+        
         const OVER_TWELVE_HOURS = 43300000
         global.Date.now = jest.fn(() => 1585440589478 + OVER_TWELVE_HOURS) as any;
         
@@ -112,7 +112,7 @@ describe("RandomWeatherProvider", () => {
 
         const newExpectedOutput: WeatherDataProviderResponse = {
             weather: {
-                current: randomWeatherOutput,
+                current: newRandomWeatherOutput,
                 forecast: undefined,
             },
         }

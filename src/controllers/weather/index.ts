@@ -8,7 +8,7 @@ export class WeatherController {
         this.weatherProvider = weatherProvider;
     }
 
-    public index = async (request: Request, response: Response) => {
+    public index: (request: Request, response: Response) => void = async (request: Request, response: Response) => {
         const { location, type } = request.query;
 
         try {

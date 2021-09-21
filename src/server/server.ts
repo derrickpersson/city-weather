@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import healthCheck from "express-healthcheck";
 import { WeatherController } from "../controllers";
 import { RandomWeatherProvider } from "../providers";
+import packageJSON from "../../package.json";
 
 const randomWeatherProvider = new RandomWeatherProvider();
 const weatherController = new WeatherController(randomWeatherProvider);
@@ -22,11 +23,10 @@ app.use(bodyParser.json());
 app.use('/health', healthCheck());
 
 app.get('/info', async function (req, res) {
-    const packageJson = require("../../package.json");
     res.send({
-        name: packageJson.name,
-        description: packageJson.description,
-        version: packageJson.version
+        name: packageJSON.name,
+        description: packageJSON.description,
+        version: packageJSON.version
     });
 });
 
